@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Job Discovery Dashboard</title>
+<style>
+:root{--bg:#0b1120;--panel:#111827;--line:#334155;--text:#f8fafc;--muted:#94a3b8;--blue:#2563eb;--bluebg:rgba(96,165,250,.14);--greenbg:rgba(52,211,153,.14);--slatebg:rgba(148,163,184,.14);--amber:#b45309;--red:#be123c}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#0b1120 0%, #111827 100%);color:var(--text)}
+.container{max-width:1320px;margin:auto;padding:24px}
+.topbar{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap}
+h1{margin:0 0 8px 0;font-size:38px}.subtitle{color:var(--muted);max-width:980px}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0 18px}
+button,a.action{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:10px;border:none;background:var(--blue);color:white;text-decoration:none;font-weight:700;cursor:pointer}
+button.secondary{background:#475569}button.skip{background:var(--red)}button.ghost,a.ghost{background:#334155}button.amber{background:var(--amber)}a.apply{background:#059669}
+.panel,.job-card,.status-card,.profile-chip,.kpi{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.notice,.hero{background:var(--panel);border:1px solid var(--line);padding:16px;border-radius:16px}
+.hero{margin-bottom:18px}
+.form-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr auto;gap:10px;align-items:end}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+input,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#0f172a;color:var(--text)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:18px 0}.kpi{padding:16px}.kpi .label{font-size:12px;color:var(--muted);text-transform:uppercase}.kpi .value{font-size:24px;font-weight:700;margin-top:8px}
+.layout{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+.section-title{font-size:22px;margin:0 0 6px 0}.section-sub{color:var(--muted);font-size:14px;margin-bottom:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.job-card{padding:18px}.company{font-weight:700}.job-card h3{margin:6px 0;font-size:18px}.meta{color:var(--muted);font-size:13px;margin:6px 0 10px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line)}
+.cat{background:var(--bluebg);color:#bfdbfe}.score{background:var(--greenbg);color:#d1fae5}.savedtag{background:var(--slatebg);color:#e2e8f0}
+.why{margin:10px 0 0 0;padding-left:18px;color:#dbeafe;font-size:14px}.why li{margin:6px 0}
+.small{font-size:13px;color:var(--muted)}
+.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.status-card{padding:14px;text-align:center;cursor:pointer}.status-card .n{font-size:24px;font-weight:700;margin-top:6px}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:14px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase}
+.profile-summary{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.profile-chip{padding:10px 12px;background:#0f172a}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}.modal.open{display:flex}
+.modal-box{width:min(1000px,100%);max-height:90vh;overflow:auto;background:#0f172a;border:1px solid var(--line);border-radius:18px;padding:20px}
+@media (max-width:1100px){.form-grid{grid-template-columns:1fr 1fr}.layout{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:700px){.container{padding:16px}.form-grid,.kpis,.status-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar">
+    <div>
+      <h1>AI Job Discovery Dashboard</h1>
+      <div class="subtitle">Product version. One loop: define target, rank jobs, take action, track pipeline. No demo fallback.</div>
+    </div>
+    <div class="toolbar">
+      <button id="generateBtn" class="secondary">Generate New Matches</button>
+      <button id="refreshBtn" class="secondary">Refresh Feed</button>
+      <button id="generateSheetBtn" class="ghost">Export Current Jobs</button>
+      <a href="./demo_job_tracker_table.xlsx" download class="action ghost">Download Base Tracker</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="section-title">Find My Jobs</div>
+    <div class="section-sub">Updated <span id="feedUpdated">--</span> • Scanned <span id="scannedCount">0</span> jobs • Matched <span id="matchedCount">0</span></div>
+    <div class="form-grid">
+      <div><label for="quickSearch">Target role or keywords</label><input id="quickSearch" placeholder="Business Analyst, Compliance Analyst, Operations" /></div>
+      <div><label for="quickCategory">Category</label><select id="quickCategory"><option value="Any">Any category</option><option>Business Analysis</option><option>Project / Program Management</option><option>Compliance / Risk</option><option>Finance / Accounting</option><option>HR / People Ops</option><option>IT / Systems</option><option>Data / Analytics</option><option>Operations</option><option>AI / Transformation</option></select></div>
+      <div><label for="quickWorkType">Work type</label><select id="quickWorkType"><option value="Any">Any work type</option><option value="Remote">Remote</option><option value="Hybrid">Hybrid</option><option value="United States">United States</option></select></div>
+      <div><label for="mustHave">Must-have keywords</label><input id="mustHave" placeholder="reporting, controls, analytics" /></div>
+      <div><button id="applyQuickFilters">Find My Jobs</button></div>
+    </div>
+    <div class="profile-summary" id="profileSummary"></div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label">Current Jobs</div><div class="value" id="jobsLoaded">0</div></div>
+    <div class="kpi"><div class="label">Average Score</div><div class="value" id="avgScore">0.0</div></div>
+    <div class="kpi"><div class="label">Saved</div><div class="value" id="savedCount">0</div></div>
+    <div class="kpi"><div class="label">Applied</div><div class="value" id="appliedCount">0</div></div>
+    <div class="kpi"><div class="label">Rejected</div><div class="value" id="rejectedCount">0</div></div>
+  </div>
+
+  <div class="layout">
+    <div class="notice">
+      <div class="section-title">Top Recommended Jobs</div>
+      <div class="section-sub">Explainable ranking with diversification by company.</div>
+      <div class="cards" id="topCards"></div>
+    </div>
+
+    <div>
+      <div class="notice">
+        <div class="section-title">Pipeline</div>
+        <div class="section-sub">Click a card to view jobs in that status.</div>
+        <div class="status-grid">
+          <div class="status-card" data-open-status="Saved"><div>Saved</div><div class="n" id="savedPipeline">0</div></div>
+          <div class="status-card" data-open-status="Applied"><div>Applied</div><div class="n" id="appliedPipeline">0</div></div>
+          <div class="status-card" data-open-status="Interviewed"><div>Interviewed</div><div class="n" id="interviewedPipeline">0</div></div>
+          <div class="status-card" data-open-status="Rejected"><div>Rejected</div><div class="n" id="rejectedPipeline">0</div></div>
+        </div>
+      </div>
+      <div class="notice" style="margin-top:18px">
+        <div class="section-title">Next Best Actions</div>
+        <div class="small" id="nextActions">No actions yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice" style="margin-top:18px">
+    <div class="section-title">Tracker</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Company</th><th>Title</th><th>Category</th><th>Location</th><th>Status</th><th>Links</th></tr></thead>
+        <tbody id="trackerTable"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="statusModal">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+      <div><div class="section-title" id="statusModalTitle">Status List</div><div class="section-sub">Jobs in this category.</div></div>
+      <button id="closeStatusBtn" class="ghost">Close</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Company</th><th>Title</th><th>Category</th><th>Location</th><th>Status</th><th>Links</th></tr></thead>
+        <tbody id="statusTable"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const LOCAL_FEED_PATH = "./jobs_feed.json";
+const STORAGE_KEY = "ai_job_dashboard_product_live_v1";
+let feedMeta = {};
+let jobs = [];
+let currentSet = [];
+let currentCandidates = [];
+let seenSets = new Set();
+
+const defaultProfile = { search:"", category:"Any", workType:"Any", mustHave:"" };
+let profile = loadProfile();
+
+function loadProfile(){
+  try { return Object.assign({}, defaultProfile, JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}")); }
+  catch { return {...defaultProfile}; }
+}
+function persistProfile(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(profile)); }
+function keywordArray(text){ return (text || "").split(",").map(x => x.trim().toLowerCase()).filter(Boolean); }
+function activeSearch(){ return (document.getElementById("quickSearch").value || "").trim().toLowerCase(); }
+function activeCategory(){ return document.getElementById("quickCategory").value || "Any"; }
+function activeWorkType(){ return document.getElementById("quickWorkType").value || "Any"; }
+
+async function loadJobs(){
+  const res = await fetch(LOCAL_FEED_PATH, { cache:"no-store" });
+  const data = await res.json();
+  feedMeta = data.meta || {};
+  return Array.isArray(data.jobs) ? data.jobs.map(j => Object.assign({
+    saved:false, applied:false, interviewed:false, rejected:false, skipped:false, shownCount:0
+  }, j)) : [];
+}
+function getConfidenceLabel(score){
+  const n = Number(score || 0);
+  if(n >= 9) return "High confidence";
+  if(n >= 8) return "Strong match";
+  if(n >= 7) return "Good match";
+  return "Exploratory";
+}
+function statusLabel(job){
+  if(job.interviewed) return "Interviewed";
+  if(job.applied) return "Applied";
+  if(job.rejected) return "Rejected";
+  if(job.saved) return "Saved";
+  return "New";
+}
+function getMatchReasons(job){
+  const reasons = [];
+  const combined = `${job.title} ${job.company} ${job.category} ${job.resumeAngle} ${job.location}`.toLowerCase();
+  const search = activeSearch();
+  if(search && combined.includes(search)) reasons.push("Title match");
+  if(activeCategory() !== "Any" && job.category === activeCategory()) reasons.push("Category fit");
+  const work = activeWorkType().toLowerCase();
+  if(work !== "any" && (job.location || "").toLowerCase().includes(work.split(" ")[0])) reasons.push("Work type fit");
+  keywordArray(document.getElementById("mustHave").value).forEach(k => { if(combined.includes(k)) reasons.push(`Keyword: ${k}`); });
+  return [...new Set(reasons)].slice(0,4);
+}
+function recommendationScore(job){
+  let score = Number(job.score || 0);
+  const combined = `${job.title} ${job.company} ${job.category} ${job.resumeAngle} ${job.location} ${(job.why||[]).join(" ")}`.toLowerCase();
+  activeSearch().split(/\s+/).filter(Boolean).forEach(word => { if(combined.includes(word)) score += 0.8; });
+  if(activeCategory() !== "Any" && job.category === activeCategory()) score += 1.4;
+  const work = activeWorkType().toLowerCase();
+  if(work !== "any" && (job.location || "").toLowerCase().includes(work.split(" ")[0])) score += 0.8;
+  keywordArray(document.getElementById("mustHave").value).forEach(k => { if(combined.includes(k)) score += 0.7; });
+  score -= Number(job.shownCount || 0) * 0.3;
+  if(job.rejected) score -= 5;
+  if(job.applied || job.interviewed) score -= 5;
+  if(job.saved) score += 0.4;
+  return score;
+}
+function setKey(list){ return list.map(j => j.company + "|" + j.title).sort().join("||"); }
+function buildCandidatePool(){
+  let candidates = jobs.filter(j => !j.rejected && !j.applied && !j.interviewed);
+  const text = activeSearch();
+  if(text) candidates = candidates.filter(j => (`${j.title} ${j.company} ${j.resumeAngle} ${j.category}`.toLowerCase().includes(text)));
+  if(activeCategory() !== "Any") candidates = candidates.filter(j => j.category === activeCategory());
+  const work = activeWorkType().toLowerCase();
+  if(work !== "any") candidates = candidates.filter(j => (j.location || "").toLowerCase().includes(work.split(" ")[0]));
+  if(!candidates.length) candidates = jobs.filter(j => !j.rejected && !j.applied && !j.interviewed);
+  currentCandidates = candidates.slice();
+  return candidates.map(j => ({...j, recScore: recommendationScore(j)})).sort((a,b) => b.recScore - a.recScore + (Math.random()-0.5)*0.2);
+}
+function getRecommendationSet(){
+  const ranked = buildCandidatePool();
+  const selected = [];
+  const usedCompanies = new Set();
+  for(const job of ranked){
+    if(selected.length >= 5) break;
+    if(usedCompanies.has(job.company)) continue;
+    selected.push(job);
+    usedCompanies.add(job.company);
+  }
+  return selected;
+}
+function updateSummary(){
+  document.getElementById("feedUpdated").innerText = feedMeta.lastUpdated || "--";
+  document.getElementById("scannedCount").innerText = jobs.length;
+  document.getElementById("matchedCount").innerText = currentCandidates.length;
+  document.getElementById("jobsLoaded").innerText = currentSet.length;
+  document.getElementById("avgScore").innerText = currentSet.length ? (currentSet.reduce((s,j)=>s+Number(j.score||0),0)/currentSet.length).toFixed(1) : "0.0";
+  document.getElementById("savedCount").innerText = jobs.filter(j => j.saved).length;
+  document.getElementById("appliedCount").innerText = jobs.filter(j => j.applied).length;
+  document.getElementById("rejectedCount").innerText = jobs.filter(j => j.rejected).length;
+  document.getElementById("savedPipeline").innerText = jobs.filter(j => j.saved).length;
+  document.getElementById("appliedPipeline").innerText = jobs.filter(j => j.applied).length;
+  document.getElementById("interviewedPipeline").innerText = jobs.filter(j => j.interviewed).length;
+  document.getElementById("rejectedPipeline").innerText = jobs.filter(j => j.rejected).length;
+  const chips = [];
+  if(activeSearch()) chips.push(`Role: ${document.getElementById("quickSearch").value}`);
+  chips.push(`Category: ${activeCategory()}`);
+  chips.push(`Work type: ${activeWorkType()}`);
+  document.getElementById("profileSummary").innerHTML = chips.map(c => `<div class="profile-chip">${c}</div>`).join("");
+  const saved = jobs.filter(j => j.saved).length;
+  const applied = jobs.filter(j => j.applied).length;
+  const rejected = jobs.filter(j => j.rejected).length;
+  document.getElementById("nextActions").innerHTML = `
+    <div>• ${saved} saved job${saved===1?"":"s"} waiting for action</div>
+    <div>• ${applied} applied job${applied===1?"":"s"} in pipeline</div>
+    <div>• ${rejected} rejected job${rejected===1?"":"s"} helping narrow future recommendations</div>`;
+}
+function renderTracker(){
+  document.getElementById("trackerTable").innerHTML = jobs.map(job => `
+    <tr>
+      <td><strong>${job.company}</strong></td>
+      <td>${job.title}</td>
+      <td>${job.category}</td>
+      <td>${job.location}</td>
+      <td>${statusLabel(job)}</td>
+      <td><a class="action" href="${job.descriptionUrl}" target="_blank" rel="noopener noreferrer">View</a></td>
+    </tr>`).join("");
+}
+function renderRecommendations(){
+  const top = document.getElementById("topCards");
+  top.innerHTML = "";
+  currentSet.forEach(job => {
+    const card = document.createElement("div");
+    card.className = "job-card";
+    card.innerHTML = `
+      <div class="company">${job.company}</div>
+      <h3>${job.title}</h3>
+      <div class="meta">${job.location} • ${job.source} • ${getConfidenceLabel(job.score)}</div>
+      <div class="badges">
+        <span class="badge cat">${job.category}</span>
+        <span class="badge score">${job.score}/10</span>
+        <span class="badge savedtag">${job.resumeAngle}</span>
+      </div>
+      <div class="small"><strong>Why this match:</strong> ${getMatchReasons(job).join(" • ") || "General relevance"}</div>
+      <ul class="why">${(job.why||[]).map(w => `<li>${w}</li>`).join("")}</ul>
+      <div class="buttons">
+        <a class="action" href="${job.descriptionUrl}" target="_blank" rel="noopener noreferrer">View Job</a>
+        <a class="action apply" href="${job.applyUrl}" target="_blank" rel="noopener noreferrer">Apply</a>
+        <button class="secondary" data-save="${job.id}">Save</button>
+        <button class="amber" data-interview="${job.id}">Interviewed</button>
+        <button class="skip" data-reject="${job.id}">Rejected</button>
+      </div>`;
+    top.appendChild(card);
+  });
+
+  document.querySelectorAll("[data-save]").forEach(btn => btn.onclick = () => {
+    const job = jobs.find(j => String(j.id) === String(btn.dataset.save));
+    if(!job) return;
+    job.saved = true; job.applied = false; job.interviewed = false; job.rejected = false;
+    renderAll();
+  });
+  document.querySelectorAll("[data-interview]").forEach(btn => btn.onclick = () => {
+    const job = jobs.find(j => String(j.id) === String(btn.dataset.interview));
+    if(!job) return;
+    job.interviewed = true; job.saved = false; job.applied = false; job.rejected = false;
+    renderAll();
+  });
+  document.querySelectorAll("[data-reject]").forEach(btn => btn.onclick = () => {
+    const job = jobs.find(j => String(j.id) === String(btn.dataset.reject));
+    if(!job) return;
+    job.rejected = true; job.saved = false; job.applied = false; job.interviewed = false;
+    generateNewMatches();
+  });
+}
+function renderAll(){ updateSummary(); renderRecommendations(); renderTracker(); }
+function generateNewMatches(){
+  let next = getRecommendationSet();
+  let key = setKey(next);
+  let attempts = 0;
+  while(seenSets.has(key) && attempts < 15){
+    next = getRecommendationSet();
+    key = setKey(next);
+    attempts++;
+  }
+  seenSets.add(key);
+  currentSet = next.map(item => jobs.find(j => String(j.id) === String(item.id)));
+  currentSet.forEach(j => j.shownCount = (j.shownCount || 0) + 1);
+  renderAll();
+}
+function openStatusList(status){
+  document.getElementById("statusModalTitle").innerText = `${status} Jobs`;
+  const rows = jobs.filter(j => statusLabel(j) === status).map(job => `
+    <tr>
+      <td><strong>${job.company}</strong></td>
+      <td>${job.title}</td>
+      <td>${job.category}</td>
+      <td>${job.location}</td>
+      <td>${statusLabel(job)}</td>
+      <td><a class="action" href="${job.descriptionUrl}" target="_blank" rel="noopener noreferrer">View</a></td>
+    </tr>`).join("");
+  document.getElementById("statusTable").innerHTML = rows || `<tr><td colspan="6">No jobs in this category yet.</td></tr>`;
+  document.getElementById("statusModal").classList.add("open");
+}
+function closeStatus(){ document.getElementById("statusModal").classList.remove("open"); }
+function exportCsv(){
+  const headers = ["Date Added","Company","Job Title","Category","Score","Work Type","Resume Angle","View Link","Apply Link","Source","Status"];
+  const rows = currentSet.map(job => [job.dateFound, job.company, job.title, job.category, job.score, job.location, job.resumeAngle, job.descriptionUrl, job.applyUrl, job.source, statusLabel(job)]);
+  const csv = [headers, ...rows].map(r => r.map(v => {
+    const s = String(v ?? "");
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }).join(",")).join("\n");
+  const blob = new Blob([csv], {type:"text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "current-jobs-export.csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+document.getElementById("generateBtn").addEventListener("click", generateNewMatches);
+document.getElementById("refreshBtn").addEventListener("click", async () => { jobs = await loadJobs(); seenSets.clear(); generateNewMatches(); });
+document.getElementById("generateSheetBtn").addEventListener("click", exportCsv);
+document.getElementById("applyQuickFilters").addEventListener("click", () => {
+  profile.search = document.getElementById("quickSearch").value.trim();
+  profile.category = document.getElementById("quickCategory").value;
+  profile.workType = document.getElementById("quickWorkType").value;
+  profile.mustHave = document.getElementById("mustHave").value.trim();
+  persistProfile();
+  seenSets.clear();
+  generateNewMatches();
+});
+document.querySelectorAll("[data-open-status]").forEach(el => el.addEventListener("click", () => openStatusList(el.dataset.openStatus)));
+document.getElementById("closeStatusBtn").addEventListener("click", closeStatus);
+document.getElementById("statusModal").addEventListener("click", e => { if(e.target.id === "statusModal") closeStatus(); });
+
+async function boot(){
+  document.getElementById("quickSearch").value = profile.search || "";
+  document.getElementById("quickCategory").value = profile.category || "Any";
+  document.getElementById("quickWorkType").value = profile.workType || "Any";
+  document.getElementById("mustHave").value = profile.mustHave || "";
+  jobs = await loadJobs();
+  generateNewMatches();
+}
+boot();
+</script>
+</body>
+</html>
