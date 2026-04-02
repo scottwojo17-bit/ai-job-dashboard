@@ -1,3 +1,14 @@
 {
   "jobs": []
 }
+{
+  "jobs": [
+    {
+      "company": "OpenAI",
+      "title": "Operations Analyst",
+      "location": "Remote",
+      "descriptionUrl": "https://openai.com/careers",
+      "applyUrl": "https://openai.com/careers"
+    }
+  ]
+}
