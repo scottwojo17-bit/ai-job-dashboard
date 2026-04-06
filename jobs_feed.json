@@ -1,0 +1,351 @@
+{
+  "meta": {
+    "source": "expanded jobs_feed.json",
+    "lastUpdated": "2026-04-02",
+    "notes": "Broad seed feed with search URLs."
+  },
+  "jobs": [
+    {
+      "id": "job-001",
+      "company": "Quest Diagnostics",
+      "title": "Phlebotomist I",
+      "category": "Healthcare / Lab",
+      "score": 7.5,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Phlebotomy",
+      "location": "Field",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=quest%20diagnostics%20phlebotomist",
+      "applyUrl": "https://www.indeed.com/jobs?q=quest%20diagnostics%20phlebotomist",
+      "why": [
+        "Phlebotomist I role family match",
+        "Phlebotomy relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-002",
+      "company": "Labcorp",
+      "title": "Mobile Phlebotomist",
+      "category": "Healthcare / Lab",
+      "score": 7.9,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Phlebotomy",
+      "location": "Field",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=labcorp%20mobile%20phlebotomist",
+      "applyUrl": "https://www.indeed.com/jobs?q=labcorp%20mobile%20phlebotomist",
+      "why": [
+        "Mobile Phlebotomist role family match",
+        "Phlebotomy relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-003",
+      "company": "American Red Cross",
+      "title": "Donor Collection Specialist",
+      "category": "Healthcare / Lab",
+      "score": 8.3,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Patient Care",
+      "location": "United States",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=american%20red%20cross%20donor%20collection%20specialist",
+      "applyUrl": "https://www.indeed.com/jobs?q=american%20red%20cross%20donor%20collection%20specialist",
+      "why": [
+        "Donor Collection Specialist role family match",
+        "Patient Care relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-004",
+      "company": "BioReference",
+      "title": "Specimen Collector",
+      "category": "Healthcare / Lab",
+      "score": 8.8,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Specimen Collection",
+      "location": "United States",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=bioreference%20specimen%20collector",
+      "applyUrl": "https://www.indeed.com/jobs?q=bioreference%20specimen%20collector",
+      "why": [
+        "Specimen Collector role family match",
+        "Specimen Collection relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-005",
+      "company": "HCA Healthcare",
+      "title": "Medical Assistant",
+      "category": "Healthcare Support",
+      "score": 7.0,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Clinical Support",
+      "location": "United States",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=hca%20medical%20assistant",
+      "applyUrl": "https://www.indeed.com/jobs?q=hca%20medical%20assistant",
+      "why": [
+        "Medical Assistant role family match",
+        "Clinical Support relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-006",
+      "company": "UnitedHealth Group",
+      "title": "Revenue Cycle Analyst",
+      "category": "Healthcare Operations",
+      "score": 7.5,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Revenue Cycle",
+      "location": "Remote",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=unitedhealth%20revenue%20cycle%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=unitedhealth%20revenue%20cycle%20analyst",
+      "why": [
+        "Revenue Cycle Analyst role family match",
+        "Revenue Cycle relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-007",
+      "company": "ZipRecruiter",
+      "title": "Recruiter",
+      "category": "Talent Acquisition",
+      "score": 7.9,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Recruiting",
+      "location": "Remote",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=ziprecruiter%20recruiter",
+      "applyUrl": "https://www.indeed.com/jobs?q=ziprecruiter%20recruiter",
+      "why": [
+        "Recruiter role family match",
+        "Recruiting relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-008",
+      "company": "Intuit",
+      "title": "Accountant",
+      "category": "Finance / Accounting",
+      "score": 8.3,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Accounting",
+      "location": "Remote",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=intuit%20accountant",
+      "applyUrl": "https://www.indeed.com/jobs?q=intuit%20accountant",
+      "why": [
+        "Accountant role family match",
+        "Accounting relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-009",
+      "company": "Deloitte",
+      "title": "Business Analyst",
+      "category": "Business Analysis",
+      "score": 8.8,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Business Analysis",
+      "location": "Hybrid",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=deloitte%20business%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=deloitte%20business%20analyst",
+      "why": [
+        "Business Analyst role family match",
+        "Business Analysis relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-010",
+      "company": "Accenture",
+      "title": "Process Analyst",
+      "category": "Business Analysis",
+      "score": 7.0,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Process Improvement",
+      "location": "Hybrid",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=accenture%20process%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=accenture%20process%20analyst",
+      "why": [
+        "Process Analyst role family match",
+        "Process Improvement relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-011",
+      "company": "Figma",
+      "title": "Operations Analyst",
+      "category": "Operations",
+      "score": 7.5,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Operations",
+      "location": "Remote",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=figma%20operations%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=figma%20operations%20analyst",
+      "why": [
+        "Operations Analyst role family match",
+        "Operations relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-012",
+      "company": "JPMorgan Chase",
+      "title": "Compliance Analyst",
+      "category": "Compliance / Risk",
+      "score": 7.9,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Compliance",
+      "location": "Hybrid",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=jpmorgan%20compliance%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=jpmorgan%20compliance%20analyst",
+      "why": [
+        "Compliance Analyst role family match",
+        "Compliance relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-013",
+      "company": "Citi",
+      "title": "Risk Analyst",
+      "category": "Compliance / Risk",
+      "score": 8.3,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Risk",
+      "location": "Hybrid",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=citi%20risk%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=citi%20risk%20analyst",
+      "why": [
+        "Risk Analyst role family match",
+        "Risk relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-014",
+      "company": "Stripe",
+      "title": "Financial Analyst",
+      "category": "Finance / Accounting",
+      "score": 8.8,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Finance",
+      "location": "Remote",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=stripe%20financial%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=stripe%20financial%20analyst",
+      "why": [
+        "Financial Analyst role family match",
+        "Finance relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-015",
+      "company": "Tableau",
+      "title": "Data Analyst",
+      "category": "Data / Analytics",
+      "score": 7.0,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Analytics",
+      "location": "Remote",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=tableau%20data%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=tableau%20data%20analyst",
+      "why": [
+        "Data Analyst role family match",
+        "Analytics relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-016",
+      "company": "Asana",
+      "title": "Program Analyst",
+      "category": "Project / Program Management",
+      "score": 7.5,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Program Management",
+      "location": "Remote",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=asana%20program%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=asana%20program%20analyst",
+      "why": [
+        "Program Analyst role family match",
+        "Program Management relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-017",
+      "company": "Okta",
+      "title": "Systems Analyst",
+      "category": "IT / Systems",
+      "score": 7.9,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Systems",
+      "location": "Remote",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=okta%20systems%20analyst",
+      "applyUrl": "https://www.indeed.com/jobs?q=okta%20systems%20analyst",
+      "why": [
+        "Systems Analyst role family match",
+        "Systems relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-018",
+      "company": "OpenAI",
+      "title": "Automation Specialist",
+      "category": "AI / Transformation",
+      "score": 8.3,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Automation",
+      "location": "Hybrid",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=openai%20automation%20specialist",
+      "applyUrl": "https://www.indeed.com/jobs?q=openai%20automation%20specialist",
+      "why": [
+        "Automation Specialist role family match",
+        "Automation relevance",
+        "Expanded seed feed result"
+      ]
+    },
+    {
+      "id": "job-019",
+      "company": "FedEx",
+      "title": "Logistics Coordinator",
+      "category": "Supply Chain / Logistics",
+      "score": 8.8,
+      "source": "Expanded Feed",
+      "dateFound": "2026-04-02",
+      "resumeAngle": "Logistics",
+      "location": "United States",
+      "descriptionUrl": "https://www.indeed.com/jobs?q=fedex%20logistics%20coordinator",
+      "applyUrl": "https://www.indeed.com/jobs?q=fedex%20logistics%20coordinator",
+      "why": [
+        "Logistics Coordinator role family match",
+        "Logistics relevance",
+        "Expanded seed feed result"
+      ]
+    }
+  ]
+}
